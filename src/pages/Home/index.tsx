@@ -1,4 +1,6 @@
 import {
+  CoffeeList,
+  CoffeeListContainer,
   HomeContainer,
   IntroContainer,
   IntroContent,
@@ -12,6 +14,7 @@ import { Container } from '../../styles/Container'
 
 import introImage from '../../assets/intro-image.png'
 import introBackgroundImage from '../../assets/intro-background.png'
+import { CoffeeCard } from './components/CoffeeCard'
 
 export function Home() {
   return (
@@ -56,6 +59,18 @@ export function Home() {
           </IntroContent>
         </Container>
       </IntroContainer>
+      <CoffeeListContainer>
+        <Container>
+          <h2>Nossos cafés</h2>
+          <CoffeeList>
+            <CoffeeCard />
+            <CoffeeCard />
+            <CoffeeCard />
+            <CoffeeCard />
+            <CoffeeCard />
+          </CoffeeList>
+        </Container>
+      </CoffeeListContainer>
     </HomeContainer>
   )
 }

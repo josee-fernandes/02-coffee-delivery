@@ -25,8 +25,11 @@ export const NavActions = styled.div`
 export const BaseButton = styled.button`
   border: none;
   padding: 0.5rem;
-  border-radius: 8px;
+  border-radius: 6px;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `
 
 export const LocationButton = styled(BaseButton)`

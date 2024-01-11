@@ -83,3 +83,16 @@ export const IntroIcon = styled.div<IntroIconProps>`
     color: ${(props) => props.theme.background};
   }
 `
+
+export const CoffeeListContainer = styled.main`
+  padding-top: 2rem;
+  padding-bottom: 9.8125rem;
+`
+
+export const CoffeeList = styled.ul`
+  margin-top: 3.375rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  column-gap: 1.5rem;
+  row-gap: 2.5rem;
+`

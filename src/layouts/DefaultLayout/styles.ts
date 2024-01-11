@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export const LayoutContainer = styled.div`
   background: ${(props) => props.theme.background};
-  width: 100vw;
+  width: 100%;
 `
 
 export const NavContainer = styled.nav`
@@ -26,6 +26,7 @@ export const BaseButton = styled.button`
   border: none;
   padding: 0.5rem;
   border-radius: 8px;
+  cursor: pointer;
 `
 
 export const LocationButton = styled(BaseButton)`

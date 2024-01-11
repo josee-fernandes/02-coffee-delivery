@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import { MapPin, ShoppingCart } from 'phosphor-react'
 
-import logoCoffeDelivery from '../../assets/logo-coffee-delivery.svg'
+import logoCoffeeDelivery from '../../assets/logo-coffee-delivery.svg'
 
 import {
   CartButton,
@@ -17,7 +17,7 @@ export function DefaultLayout() {
     <LayoutContainer>
       <NavContainer>
         <Container>
-          <img src={logoCoffeDelivery} alt="Logotipo do Coffee Delivery" />
+          <img src={logoCoffeeDelivery} alt="Logotipo do Coffee Delivery" />
           <div>
             <NavActions>
               <LocationButton>

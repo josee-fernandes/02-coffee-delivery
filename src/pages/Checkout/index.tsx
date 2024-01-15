@@ -14,6 +14,8 @@ import {
   AddressInputsContainer,
   CheckoutContainer,
   PaymentContainer,
+  PaymentMethodButton,
+  PaymentMethodsContainer,
 } from './styles'
 
 const paymentMethodEnum = z.enum(['creditCard', 'debitCard', 'money'])
@@ -37,21 +39,31 @@ const finishOrderSchema = z.object({
 type FinishOrderSchemaType = z.infer<typeof finishOrderSchema>
 
 export function Checkout() {
-  const { register, handleSubmit, watch } = useForm<FinishOrderSchemaType>({
-    defaultValues: {
-      cep: '',
-      street: '',
-      number: 0,
-      complement: '',
-      neighborhood: '',
-      city: '',
-      state: '',
-      paymentMethod: 'creditCard',
-    },
-  })
+  const { register, handleSubmit, watch, setValue } =
+    useForm<FinishOrderSchemaType>({
+      defaultValues: {
+        cep: '',
+        street: '',
+        number: 0,
+        complement: '',
+        neighborhood: '',
+        city: '',
+        state: '',
+        paymentMethod: 'creditCard',
+      },
+    })
 
   function finishOrder(data: FinishOrderSchemaType) {
     console.log(data)
+  }
+
+  function checkPaymentOption(event: React.MouseEvent<HTMLButtonElement>) {
+    const target = event.target as HTMLButtonElement
+
+    setValue(
+      'paymentMethod',
+      target.value as keyof typeof paymentMethodEnum.enum,
+    )
   }
 
   const complement = watch('complement')
@@ -144,35 +156,47 @@ export function Checkout() {
                     </p>
                   </div>
                 </header>
-                <div>
-                  <button type="button">
-                    <input
-                      type="radio"
-                      {...register('paymentMethod')}
-                      value={paymentMethodEnum.Enum.creditCard}
-                    />
+                <PaymentMethodsContainer>
+                  <input
+                    type="radio"
+                    {...register('paymentMethod')}
+                    value={paymentMethodEnum.Enum.creditCard}
+                  />
+                  <PaymentMethodButton
+                    type="button"
+                    onClick={checkPaymentOption}
+                    value={paymentMethodEnum.Enum.creditCard}
+                  >
                     <CreditCard size={16} />
                     <p>CARTÃO DE CRÉDITO</p>
-                  </button>
-                  <button type="button">
-                    <input
-                      type="radio"
-                      {...register('paymentMethod')}
-                      value={paymentMethodEnum.Enum.debitCard}
-                    />
+                  </PaymentMethodButton>
+                  <input
+                    type="radio"
+                    {...register('paymentMethod')}
+                    value={paymentMethodEnum.Enum.debitCard}
+                  />
+                  <PaymentMethodButton
+                    type="button"
+                    onClick={checkPaymentOption}
+                    value={paymentMethodEnum.Enum.debitCard}
+                  >
                     <Bank size={16} />
                     <p>CARTÃO DE DÉBITO</p>
-                  </button>
-                  <button type="button">
-                    <input
-                      type="radio"
-                      {...register('paymentMethod')}
-                      value={paymentMethodEnum.Enum.money}
-                    />
+                  </PaymentMethodButton>
+                  <input
+                    type="radio"
+                    {...register('paymentMethod')}
+                    value={paymentMethodEnum.Enum.money}
+                  />
+                  <PaymentMethodButton
+                    type="button"
+                    value={paymentMethodEnum.Enum.money}
+                    onClick={checkPaymentOption}
+                  >
                     <Money size={16} />
                     <p>DINHEIRO</p>
-                  </button>
-                </div>
+                  </PaymentMethodButton>
+                </PaymentMethodsContainer>
               </PaymentContainer>
             </form>
           </main>

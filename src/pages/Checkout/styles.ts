@@ -124,4 +124,49 @@ export const PaymentContainer = styled(FormSectionContainer)`
       color: ${(props) => props.theme.purple};
     }
   }
+
+  input[type='radio'] {
+    visibility: hidden;
+    max-height: 0;
+    max-width: 0;
+  }
+
+  input[type='radio']:checked + button {
+    background: ${(props) => props.theme['purple-light']};
+    border-color: ${(props) => props.theme.purple};
+  }
+`
+
+export const PaymentMethodsContainer = styled.div`
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 2rem;
+`
+
+export const PaymentMethodButton = styled.button`
+  display: flex;
+  gap: 0.75rem;
+  padding: 1rem;
+  border: none;
+  background: ${(props) => props.theme['base-button']};
+  border-radius: 6px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 150ms;
+
+  &:hover {
+    background: ${(props) => props.theme['base-hover']};
+    color: ${(props) => props.theme['base-subtitle']};
+  }
+
+  svg {
+    color: ${(props) => props.theme.purple};
+  }
+
+  p {
+    color: ${(props) => props.theme['base-text']};
+    font-size: 0.75rem;
+    line-height: 1.6;
+    pointer-events: none;
+  }
 `

@@ -9,7 +9,12 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Container } from '../../styles/Container'
-import { CheckoutContainer } from './styles'
+import {
+  AddressContainer,
+  AddressInputsContainer,
+  CheckoutContainer,
+  PaymentContainer,
+} from './styles'
 
 const paymentMethodEnum = z.enum(['creditCard', 'debitCard', 'money'])
 
@@ -32,7 +37,7 @@ const finishOrderSchema = z.object({
 type FinishOrderSchemaType = z.infer<typeof finishOrderSchema>
 
 export function Checkout() {
-  const { register, handleSubmit } = useForm<FinishOrderSchemaType>({
+  const { register, handleSubmit, watch } = useForm<FinishOrderSchemaType>({
     defaultValues: {
       cep: '',
       street: '',
@@ -49,6 +54,10 @@ export function Checkout() {
     console.log(data)
   }
 
+  const complement = watch('complement')
+  const isComplementTyped =
+    typeof complement === 'string' && complement.length > 0
+
   return (
     <CheckoutContainer>
       <Container>
@@ -56,74 +65,79 @@ export function Checkout() {
           <main>
             <h2>Complete seu pedido</h2>
             <form onSubmit={handleSubmit(finishOrder)}>
-              <div>
+              <AddressContainer>
                 <header>
                   <MapPinLine size={22} />
                   <div>
-                    <p>Endereço de entrega</p>
+                    <strong>Endereço de entrega</strong>
                     <p>Informe o endereço onde deseja receber seu pedido</p>
                   </div>
                 </header>
 
-                <input
-                  type="text"
-                  placeholder="CEP"
-                  minLength={1}
-                  maxLength={9}
-                  required
-                  {...register('cep')}
-                />
-                <input
-                  type="text"
-                  placeholder="Rua"
-                  minLength={1}
-                  required
-                  {...register('street')}
-                />
-                <div>
+                <AddressInputsContainer>
                   <input
                     type="text"
-                    placeholder="Número"
+                    placeholder="CEP"
+                    minLength={1}
+                    maxLength={9}
+                    required
+                    {...register('cep')}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Rua"
                     minLength={1}
                     required
-                    {...register('number')}
+                    {...register('street')}
                   />
-                  <input
-                    type="text"
-                    placeholder="Complemento"
-                    minLength={1}
-                    {...register('complement')}
-                  />
-                </div>
-                <div>
-                  <input
-                    type="text"
-                    placeholder="Bairro"
-                    minLength={1}
-                    required
-                    {...register('neighborhood')}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Cidade"
-                    minLength={1}
-                    required
-                    {...register('city')}
-                  />
-                  <input
-                    type="text"
-                    placeholder="UF"
-                    minLength={1}
-                    required
-                    {...register('state')}
-                  />
-                </div>
-              </div>
-              <div>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Número"
+                      minLength={1}
+                      required
+                      {...register('number')}
+                    />
+                    <span>
+                      <input
+                        type="text"
+                        placeholder="Complemento"
+                        minLength={1}
+                        {...register('complement')}
+                      />
+                      {!isComplementTyped && <p>Opcional</p>}
+                    </span>
+                  </div>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="Bairro"
+                      minLength={1}
+                      required
+                      {...register('neighborhood')}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Cidade"
+                      minLength={1}
+                      required
+                      {...register('city')}
+                    />
+                    <input
+                      type="text"
+                      placeholder="UF"
+                      minLength={1}
+                      required
+                      {...register('state')}
+                    />
+                  </div>
+                </AddressInputsContainer>
+              </AddressContainer>
+              <PaymentContainer>
                 <header>
                   <CurrencyDollar size={22} />
                   <div>
-                    <p>Pagamento</p>
+                    <strong>Pagamento</strong>
                     <p>
                       O pagamento é feito na entrega. Escolha a forma que deseja
                       pagar
@@ -159,8 +173,7 @@ export function Checkout() {
                     <p>DINHEIRO</p>
                   </button>
                 </div>
-              </div>
-              <button type="submit">submit</button>
+              </PaymentContainer>
             </form>
           </main>
           <div>

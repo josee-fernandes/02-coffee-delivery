@@ -1,6 +1,8 @@
 import styled from 'styled-components'
 
 export const CheckoutContainer = styled.div`
+  margin-top: 2.5rem;
+
   h2 {
     font-family: 'Baloo 2', sans-serif;
     font-size: 1.125rem;
@@ -28,6 +30,11 @@ export const CheckoutContainer = styled.div`
       }
     }
   }
+`
+
+export const FormWrapper = styled.div`
+  display: flex;
+  gap: 2rem;
 `
 
 export const FormSectionContainer = styled.div`
@@ -168,5 +175,69 @@ export const PaymentMethodButton = styled.button`
     font-size: 0.75rem;
     line-height: 1.6;
     pointer-events: none;
+  }
+`
+
+export const SelectedCoffeesContainer = styled.div`
+  & > div {
+    margin-top: 0.9375rem;
+    background: ${(props) => props.theme['base-card']};
+    padding: 2.5rem;
+    border-radius: 6px 44px 6px;
+    width: 26rem;
+    height: 31.125rem;
+    display: flex;
+    flex-direction: column;
+  }
+`
+
+export const SelectedCoffeesList = styled.ul`
+  flex: 1;
+  overflow: auto;
+
+  & > li + li {
+    border-top: 1px solid ${(props) => props.theme['base-button']};
+  }
+`
+
+export const PricingInfoTableContainer = styled.div`
+  table {
+    width: 100%;
+    border-top: 1px solid ${(props) => props.theme['base-button']};
+    padding-top: 1.5rem;
+
+    tbody {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+
+      tr {
+        display: flex;
+        justify-content: space-between;
+        line-height: 1.3;
+
+        strong {
+          color: ${(props) => props.theme['base-subtitle']};
+          font-weight: 700;
+          font-size: 1.25rem;
+        }
+      }
+    }
+  }
+`
+
+export const FinishOrderButton = styled.button`
+  border: none;
+  background: ${(props) => props.theme.yellow};
+  color: ${(props) => props.theme.white};
+  padding: 0.75rem 0.5rem;
+  border-radius: 6px;
+  width: 100%;
+  transition: background-color 150ms;
+  cursor: pointer;
+  margin-top: 1.5rem;
+
+  &:hover {
+    background: ${(props) => props.theme['yellow-dark']};
   }
 `

@@ -1,25 +1,25 @@
 import { useState } from 'react'
-import { Minus, Plus, ShoppingCart } from 'phosphor-react'
+import { ShoppingCart } from 'phosphor-react'
 
 import {
   Actions,
   BuyInfo,
   CardContainer,
   CartButton,
-  CoffeeAmountCounter,
   CoffeeInfo,
 } from './styles'
 
 import coffeeImage from '../../../../assets/cafe-expresso.png'
+import { AmountCounter } from '../../../../components/AmountCounter'
 
 export function CoffeeCard() {
   const [amount, setAmount] = useState(0)
 
-  function handleIncreaseAmount() {
+  function increaseAmount() {
     setAmount((oldAmount) => oldAmount + 1)
   }
 
-  function handleReduceAmount() {
+  function reduceAmount() {
     setAmount((oldAmount) => oldAmount - 1)
   }
 
@@ -38,22 +38,11 @@ export function CoffeeCard() {
         </span>
 
         <Actions>
-          <CoffeeAmountCounter>
-            <button onClick={handleReduceAmount}>
-              <Minus />
-            </button>
-            <input
-              type="number"
-              value={amount}
-              min={0}
-              max={99}
-              onChange={(event) => setAmount(Number(event.target.value))}
-            />
-            <button onClick={handleIncreaseAmount}>
-              <Plus />
-            </button>
-          </CoffeeAmountCounter>
-
+          <AmountCounter
+            amount={amount}
+            onIncreaseAmount={increaseAmount}
+            onReduceAmount={reduceAmount}
+          />
           <CartButton title="Adicionar ao carrinho">
             <ShoppingCart size={22} weight="fill" />
           </CartButton>

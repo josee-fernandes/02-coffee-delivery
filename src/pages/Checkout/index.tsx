@@ -13,11 +13,16 @@ import {
   AddressContainer,
   AddressInputsContainer,
   CheckoutContainer,
+  FinishOrderButton,
+  FormWrapper,
   PaymentContainer,
   PaymentMethodButton,
   PaymentMethodsContainer,
+  PricingInfoTableContainer,
+  SelectedCoffeesContainer,
+  SelectedCoffeesList,
 } from './styles'
-
+import { SelectedCoffeeItem } from './components/SelectedCoffeeItem'
 const paymentMethodEnum = z.enum(['creditCard', 'debitCard', 'money'])
 
 const finishOrderSchema = z.object({
@@ -73,7 +78,7 @@ export function Checkout() {
   return (
     <CheckoutContainer>
       <Container>
-        <div>
+        <FormWrapper>
           <main>
             <h2>Complete seu pedido</h2>
             <form onSubmit={handleSubmit(finishOrder)}>
@@ -200,10 +205,42 @@ export function Checkout() {
               </PaymentContainer>
             </form>
           </main>
-          <div>
+          <SelectedCoffeesContainer>
             <h2>Cafés selecionados</h2>
-          </div>
-        </div>
+            <div>
+              <SelectedCoffeesList>
+                <SelectedCoffeeItem />
+
+                <SelectedCoffeeItem />
+              </SelectedCoffeesList>
+              <PricingInfoTableContainer>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>Total de itens</td>
+                      <td>R$ 29,70</td>
+                    </tr>
+                    <tr>
+                      <td>Entrega</td>
+                      <td>R$ 3,50</td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <strong>Total</strong>
+                      </td>
+                      <td>
+                        <strong>R$ 33,20</strong>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </PricingInfoTableContainer>
+              <FinishOrderButton type="button">
+                CONFIRMAR PEDIDO
+              </FinishOrderButton>
+            </div>
+          </SelectedCoffeesContainer>
+        </FormWrapper>
       </Container>
     </CheckoutContainer>
   )

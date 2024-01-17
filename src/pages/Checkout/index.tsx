@@ -23,6 +23,7 @@ import {
   SelectedCoffeesList,
 } from './styles'
 import { SelectedCoffeeItem } from './components/SelectedCoffeeItem'
+import { NavLink } from 'react-router-dom'
 const paymentMethodEnum = z.enum(['creditCard', 'debitCard', 'money'])
 
 const finishOrderSchema = z.object({
@@ -235,9 +236,11 @@ export function Checkout() {
                   </tbody>
                 </table>
               </PricingInfoTableContainer>
-              <FinishOrderButton type="button">
-                CONFIRMAR PEDIDO
-              </FinishOrderButton>
+              <NavLink to="/success">
+                <FinishOrderButton type="button">
+                  CONFIRMAR PEDIDO
+                </FinishOrderButton>
+              </NavLink>
             </div>
           </SelectedCoffeesContainer>
         </FormWrapper>

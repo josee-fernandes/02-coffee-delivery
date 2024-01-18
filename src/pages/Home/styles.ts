@@ -67,12 +67,12 @@ const introIconsColors = {
 }
 
 interface IntroIconProps {
-  $color: 'orange' | 'gray' | 'yellow' | 'purple'
+  $color: keyof typeof introIconsColors
 }
 
 export const IntroIcon = styled.div<IntroIconProps>`
-  width: 2rem;
-  height: 2rem;
+  min-width: 2rem;
+  min-height: 2rem;
   background: ${(props) => props.theme[introIconsColors[props.$color]]};
   border-radius: 9999px;
   display: flex;

@@ -1,6 +1,12 @@
 import { Container } from '../../styles/Container'
 
-import { OrderInfoContainer, OrderInfoItem, SuccessContainer } from './styles'
+import {
+  OrderInfo,
+  OrderInfoContainer,
+  OrderInfoIcon,
+  OrderInfoItem,
+  SuccessContainer,
+} from './styles'
 
 import deliverymanImage from '../../assets/deliveryman.svg'
 import { CurrencyDollar, MapPin, Timer } from 'phosphor-react'
@@ -17,21 +23,33 @@ export function Success() {
           <OrderInfoContainer>
             <ul>
               <OrderInfoItem>
-                <MapPin />
-                <p>
-                  Entrega em <strong>Rua João Daniel Martinelli, 102</strong>
-                </p>
-                <p>Farrapos - Porto Alegre, RS</p>
+                <OrderInfoIcon $color="purple">
+                  <MapPin />
+                </OrderInfoIcon>
+                <OrderInfo>
+                  <p>
+                    Entrega em <strong>Rua João Daniel Martinelli, 102</strong>
+                  </p>
+                  <p>Farrapos - Porto Alegre, RS</p>
+                </OrderInfo>
               </OrderInfoItem>
               <OrderInfoItem>
-                <Timer />
-                <p>Previsão de entrega</p>
-                <strong>20 min - 30 min</strong>
+                <OrderInfoIcon $color="yellow">
+                  <Timer />
+                </OrderInfoIcon>
+                <OrderInfo>
+                  <p>Previsão de entrega</p>
+                  <strong>20 min - 30 min</strong>
+                </OrderInfo>
               </OrderInfoItem>
               <OrderInfoItem>
-                <CurrencyDollar />
-                <p>Pagamento na entrega</p>
-                <strong>Cartão de crédito</strong>
+                <OrderInfoIcon $color="orange">
+                  <CurrencyDollar />
+                </OrderInfoIcon>
+                <OrderInfo>
+                  <p>Pagamento na entrega</p>
+                  <strong>Cartão de crédito</strong>
+                </OrderInfo>
               </OrderInfoItem>
             </ul>
           </OrderInfoContainer>

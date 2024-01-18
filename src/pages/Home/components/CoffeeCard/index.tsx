@@ -7,12 +7,25 @@ import {
   CardContainer,
   CartButton,
   CoffeeInfo,
+  CoffeeTags,
 } from './styles'
 
-import coffeeImage from '../../../../assets/cafe-expresso.png'
 import { AmountCounter } from '../../../../components/AmountCounter'
 
-export function CoffeeCard() {
+export interface CoffeeType {
+  id: string
+  image: string
+  tags: string[]
+  name: string
+  description: string
+  price: number
+}
+
+interface CoffeeCardProps {
+  coffee: CoffeeType
+}
+
+export function CoffeeCard({ coffee }: CoffeeCardProps) {
   const [amount, setAmount] = useState(0)
 
   function increaseAmount() {
@@ -26,15 +39,22 @@ export function CoffeeCard() {
   return (
     <CardContainer>
       <CoffeeInfo>
-        <img src={coffeeImage} alt="Foto café" />
-        <span>TRADICIONAL</span>
-        <h3>Expresso tradicional</h3>
-        <p>O tradicional café feito com água quente e grãos moídos</p>
+        <img src={coffee.image} alt="Foto café" />
+        <CoffeeTags>
+          {coffee.tags.map((tag) => (
+            <li key={coffee.id + tag}>
+              <span>{tag}</span>
+            </li>
+          ))}
+        </CoffeeTags>
+
+        <h3>{coffee.name}</h3>
+        <p>{coffee.description}</p>
       </CoffeeInfo>
 
       <BuyInfo>
         <span>
-          R$ <strong>9,90</strong>
+          R$ <strong>{coffee.price}</strong>
         </span>
 
         <Actions>

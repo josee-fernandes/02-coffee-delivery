@@ -23,16 +23,6 @@ export const CoffeeInfo = styled.div`
   margin-top: -1.25rem;
   flex: 1;
 
-  & > span {
-    background: ${(props) => props.theme['yellow-light']};
-    color: ${(props) => props.theme['yellow-dark']};
-    font-size: 0.625rem;
-    text-transform: uppercase;
-    padding: 0.25rem 0.5rem;
-    border-radius: 100px;
-    margin-top: 0.75rem;
-  }
-
   h3 {
     color: ${(props) => props.theme['base-subtitle']};
     font-family: 'Baloo 2', sans-serif;
@@ -49,6 +39,26 @@ export const CoffeeInfo = styled.div`
     line-height: 130%;
     text-align: center;
     margin-top: 0.5rem;
+  }
+`
+
+export const CoffeeTags = styled.ul`
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 0.75rem;
+
+  li {
+    list-style-type: none;
+
+    span {
+      background: ${(props) => props.theme['yellow-light']};
+      color: ${(props) => props.theme['yellow-dark']};
+      font-size: 0.625rem;
+      text-transform: uppercase;
+      padding: 0.25rem 0.5rem;
+      border-radius: 100px;
+      line-height: 1.3;
+    }
   }
 `
 

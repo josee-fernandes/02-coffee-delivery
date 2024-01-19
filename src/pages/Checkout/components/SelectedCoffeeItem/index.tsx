@@ -1,3 +1,4 @@
+import { useContext } from 'react'
 import { Trash } from 'phosphor-react'
 import { AmountCounter } from '../../../../components/AmountCounter'
 import {
@@ -6,25 +7,39 @@ import {
   SelectedCoffeeItemContainer,
   SelectedCoffeeItemInfo,
 } from './styles'
+import { CoffeeType } from '../../../Home/components/CoffeeCard'
+import { CartContext } from '../../../../contexts/CartContext'
 
-import coffeeImage from '../../../../assets/cafe-expresso.png'
+interface SelectedCoffeeItemProps {
+  coffee: CoffeeType
+}
 
-export function SelectedCoffeeItem() {
-  function increaseAmount() {}
+export function SelectedCoffeeItem({ coffee }: SelectedCoffeeItemProps) {
+  const { cart, updateCoffeeAmount } = useContext(CartContext)
 
-  function reduceAmount() {}
+  const cartCoffee = cart.find((cartCoffee) => cartCoffee.type === coffee.type)!
+
+  const amount = cartCoffee?.amount ?? 0
+
+  function increaseAmount() {
+    updateCoffeeAmount({ id: coffee.id, type: coffee.type, amount: amount + 1 })
+  }
+
+  function reduceAmount() {
+    updateCoffeeAmount({ id: coffee.id, type: coffee.type, amount: amount - 1 })
+  }
 
   return (
     <SelectedCoffeeItemContainer>
-      <img src={coffeeImage} alt="Foto café" />
+      <img src={coffee.image} alt="" />
       <div>
         <SelectedCoffeeItemInfo>
-          <p>Expresso tradicional</p>
-          <strong>R$ 9,90</strong>
+          <p>{coffee.name}</p>
+          <strong>R$ {coffee.price}</strong>
         </SelectedCoffeeItemInfo>
         <SelectedCoffeeItemActions>
           <AmountCounter
-            amount={0}
+            amount={amount}
             onIncreaseAmount={increaseAmount}
             onReduceAmount={reduceAmount}
             smallerSize

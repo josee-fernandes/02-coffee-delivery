@@ -24,6 +24,9 @@ import {
 } from './styles'
 import { SelectedCoffeeItem } from './components/SelectedCoffeeItem'
 import { NavLink } from 'react-router-dom'
+import { useContext } from 'react'
+import { CartContext, coffees } from '../../contexts/CartContext'
+
 const paymentMethodEnum = z.enum(['creditCard', 'debitCard', 'money'])
 
 const finishOrderSchema = z.object({
@@ -45,6 +48,8 @@ const finishOrderSchema = z.object({
 type FinishOrderSchemaType = z.infer<typeof finishOrderSchema>
 
 export function Checkout() {
+  const { cart } = useContext(CartContext)
+
   const { register, handleSubmit, watch, setValue } =
     useForm<FinishOrderSchemaType>({
       defaultValues: {
@@ -210,9 +215,12 @@ export function Checkout() {
             <h2>Cafés selecionados</h2>
             <div>
               <SelectedCoffeesList>
-                <SelectedCoffeeItem />
-
-                <SelectedCoffeeItem />
+                {cart.map((cartCoffee) => (
+                  <SelectedCoffeeItem
+                    key={cartCoffee.id}
+                    coffee={coffees[cartCoffee.type]}
+                  />
+                ))}
               </SelectedCoffeesList>
               <PricingInfoTableContainer>
                 <table>

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext } from 'react'
 import { ShoppingCart } from 'phosphor-react'
 
 import {
@@ -11,9 +11,11 @@ import {
 } from './styles'
 
 import { AmountCounter } from '../../../../components/AmountCounter'
+import { CartContext, CoffeeKeyType } from '../../../../contexts/CartContext'
 
 export interface CoffeeType {
   id: string
+  type: CoffeeKeyType
   image: string
   tags: string[]
   name: string
@@ -26,14 +28,18 @@ interface CoffeeCardProps {
 }
 
 export function CoffeeCard({ coffee }: CoffeeCardProps) {
-  const [amount, setAmount] = useState(0)
+  const { cart, updateCoffeeAmount } = useContext(CartContext)
+
+  const cartCoffee = cart.find((cartCoffee) => cartCoffee.type === coffee.type)!
+
+  const amount = cartCoffee?.amount ?? 0
 
   function increaseAmount() {
-    setAmount((oldAmount) => oldAmount + 1)
+    updateCoffeeAmount({ id: coffee.id, type: coffee.type, amount: amount + 1 })
   }
 
   function reduceAmount() {
-    setAmount((oldAmount) => oldAmount - 1)
+    updateCoffeeAmount({ id: coffee.id, type: coffee.type, amount: amount - 1 })
   }
 
   return (

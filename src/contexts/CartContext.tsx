@@ -291,21 +291,25 @@ interface CartContextProviderProps {
 export function CartContextProvider({ children }: CartContextProviderProps) {
   const [cart, setCart] = useState<CartCoffee[]>([])
 
-  function updateCoffeeAmount(cartCoffee: CartCoffee) {
-    setCart((oldCart) => {
-      if (oldCart.find((oldCartCoffee) => oldCartCoffee.id === cartCoffee.id))
-        return oldCart.map((oldCartCoffee) =>
-          oldCartCoffee.id === cartCoffee.id ? cartCoffee : oldCartCoffee,
-        )
-
-      return [...oldCart, cartCoffee]
-    })
-  }
-
   function removeCoffee(id: string) {
     setCart((oldCart) =>
       oldCart.filter((oldCartCoffee) => oldCartCoffee.id !== id),
     )
+  }
+
+  function updateCoffeeAmount(cartCoffee: CartCoffee) {
+    if (cartCoffee.amount === 0) {
+      removeCoffee(cartCoffee.id)
+    } else {
+      setCart((oldCart) => {
+        if (oldCart.find((oldCartCoffee) => oldCartCoffee.id === cartCoffee.id))
+          return oldCart.map((oldCartCoffee) =>
+            oldCartCoffee.id === cartCoffee.id ? cartCoffee : oldCartCoffee,
+          )
+
+        return [...oldCart, cartCoffee]
+      })
+    }
   }
 
   return (

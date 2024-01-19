@@ -44,8 +44,13 @@ export const LocationButton = styled(BaseButton)`
   }
 `
 
-export const CartButton = styled(BaseButton)`
+interface CartButtonProps {
+  $cartItemsAmount: number
+}
+
+export const CartButton = styled(BaseButton)<CartButtonProps>`
   background: ${(props) => props.theme['yellow-light']};
+  position: relative;
 
   svg {
     color: ${(props) => props.theme['yellow-dark']};
@@ -55,4 +60,25 @@ export const CartButton = styled(BaseButton)`
     outline: 0;
     box-shadow: 0 0 0 2px ${(props) => props.theme.yellow};
   }
+
+  ${(props) =>
+    props.$cartItemsAmount > 0 &&
+    `
+      &::after {
+        content: '${props.$cartItemsAmount}';
+        width: 1.25rem;
+        height: 1.25rem;
+        background: ${props.theme['yellow-dark']};
+        border-radius: 9999px;
+        position: absolute;
+        right: -0.625rem;
+        top: -0.625rem;
+        color: ${props.theme.white};
+        font-weight: 700;
+        font-size: 0.75rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    `}
 `

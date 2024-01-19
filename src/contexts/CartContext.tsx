@@ -279,6 +279,7 @@ interface CartCoffee {
 interface CartContextType {
   cart: CartCoffee[]
   updateCoffeeAmount: (cartCoffee: CartCoffee) => void
+  removeCoffee: (id: string) => void
 }
 
 export const CartContext = createContext({} as CartContextType)
@@ -301,8 +302,14 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
     })
   }
 
+  function removeCoffee(id: string) {
+    setCart((oldCart) =>
+      oldCart.filter((oldCartCoffee) => oldCartCoffee.id !== id),
+    )
+  }
+
   return (
-    <CartContext.Provider value={{ cart, updateCoffeeAmount }}>
+    <CartContext.Provider value={{ cart, updateCoffeeAmount, removeCoffee }}>
       {children}
     </CartContext.Provider>
   )

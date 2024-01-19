@@ -15,7 +15,7 @@ interface SelectedCoffeeItemProps {
 }
 
 export function SelectedCoffeeItem({ coffee }: SelectedCoffeeItemProps) {
-  const { cart, updateCoffeeAmount } = useContext(CartContext)
+  const { cart, updateCoffeeAmount, removeCoffee } = useContext(CartContext)
 
   const cartCoffee = cart.find((cartCoffee) => cartCoffee.type === coffee.type)!
 
@@ -27,6 +27,10 @@ export function SelectedCoffeeItem({ coffee }: SelectedCoffeeItemProps) {
 
   function reduceAmount() {
     updateCoffeeAmount({ id: coffee.id, type: coffee.type, amount: amount - 1 })
+  }
+
+  function handleRemoveCoffee() {
+    removeCoffee(coffee.id)
   }
 
   return (
@@ -42,9 +46,9 @@ export function SelectedCoffeeItem({ coffee }: SelectedCoffeeItemProps) {
             amount={amount}
             onIncreaseAmount={increaseAmount}
             onReduceAmount={reduceAmount}
-            smallerSize
+            $smallerSize
           />
-          <RemoveCoffeeButton>
+          <RemoveCoffeeButton onClick={handleRemoveCoffee}>
             <Trash />
             REMOVER
           </RemoveCoffeeButton>

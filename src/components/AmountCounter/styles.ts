@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 export interface AmountCounterContainerProps {
-  smallerSize?: boolean
+  $smallerSize?: boolean
 }
 
 export const AmountCounterContainer = styled.div<AmountCounterContainerProps>`
@@ -10,7 +10,7 @@ export const AmountCounterContainer = styled.div<AmountCounterContainerProps>`
   background: ${(props) => props.theme['base-button']};
   border-radius: 6px;
   ${(props) =>
-    props.smallerSize
+    props.$smallerSize
       ? `padding: 0.34375rem 0.5rem;`
       : `padding: 0.53125rem 0.5rem;`}
   gap: 0.25rem;

@@ -11,10 +11,10 @@ export function AmountCounter({
   amount,
   onIncreaseAmount,
   onReduceAmount,
-  smallerSize,
+  $smallerSize,
 }: AmountCounterProps) {
   return (
-    <AmountCounterContainer smallerSize={smallerSize}>
+    <AmountCounterContainer $smallerSize={$smallerSize}>
       <button onClick={onReduceAmount}>
         <Minus />
       </button>

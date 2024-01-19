@@ -9,6 +9,7 @@ import {
 } from './styles'
 import { CoffeeType } from '../../../Home/components/CoffeeCard'
 import { CartContext } from '../../../../contexts/CartContext'
+import { formatCurrency } from '../../../../utils/currency'
 
 interface SelectedCoffeeItemProps {
   coffee: CoffeeType
@@ -22,16 +23,28 @@ export function SelectedCoffeeItem({ coffee }: SelectedCoffeeItemProps) {
   const amount = cartCoffee?.amount ?? 0
 
   function increaseAmount() {
-    updateCoffeeAmount({ id: coffee.id, type: coffee.type, amount: amount + 1 })
+    updateCoffeeAmount({
+      ...cartCoffee,
+      id: coffee.id,
+      type: coffee.type,
+      amount: amount + 1,
+    })
   }
 
   function reduceAmount() {
-    updateCoffeeAmount({ id: coffee.id, type: coffee.type, amount: amount - 1 })
+    updateCoffeeAmount({
+      ...cartCoffee,
+      id: coffee.id,
+      type: coffee.type,
+      amount: amount - 1,
+    })
   }
 
   function handleRemoveCoffee() {
     removeCoffee(coffee.id)
   }
+
+  const price = formatCurrency(cartCoffee.price)
 
   return (
     <SelectedCoffeeItemContainer>
@@ -39,7 +52,7 @@ export function SelectedCoffeeItem({ coffee }: SelectedCoffeeItemProps) {
       <div>
         <SelectedCoffeeItemInfo>
           <p>{coffee.name}</p>
-          <strong>R$ {coffee.price}</strong>
+          <strong>{price}</strong>
         </SelectedCoffeeItemInfo>
         <SelectedCoffeeItemActions>
           <AmountCounter

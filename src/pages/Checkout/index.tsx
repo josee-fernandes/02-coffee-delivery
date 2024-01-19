@@ -26,6 +26,7 @@ import { SelectedCoffeeItem } from './components/SelectedCoffeeItem'
 import { NavLink } from 'react-router-dom'
 import { useContext } from 'react'
 import { CartContext, coffees } from '../../contexts/CartContext'
+import { formatCurrency } from '../../utils/currency'
 
 const paymentMethodEnum = z.enum(['creditCard', 'debitCard', 'money'])
 
@@ -80,6 +81,16 @@ export function Checkout() {
   const complement = watch('complement')
   const isComplementTyped =
     typeof complement === 'string' && complement.length > 0
+
+  const coffeeTotal = cart.reduce((previous, obj) => {
+    return previous + obj.price
+  }, 0)
+  const deliveryValue = 3.5
+  const total = coffeeTotal + deliveryValue
+
+  const coffeeTotalFormatted = formatCurrency(coffeeTotal)
+  const deliveryValueFormatted = formatCurrency(deliveryValue)
+  const totalFormatted = formatCurrency(total)
 
   return (
     <CheckoutContainer>
@@ -227,18 +238,18 @@ export function Checkout() {
                   <tbody>
                     <tr>
                       <td>Total de itens</td>
-                      <td>R$ 29,70</td>
+                      <td>{coffeeTotalFormatted}</td>
                     </tr>
                     <tr>
                       <td>Entrega</td>
-                      <td>R$ 3,50</td>
+                      <td>{deliveryValueFormatted}</td>
                     </tr>
                     <tr>
                       <td>
                         <strong>Total</strong>
                       </td>
                       <td>
-                        <strong>R$ 33,20</strong>
+                        <strong>{totalFormatted}</strong>
                       </td>
                     </tr>
                   </tbody>

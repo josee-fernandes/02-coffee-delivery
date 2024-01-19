@@ -274,6 +274,7 @@ interface CartCoffee {
   id: string
   type: CoffeeKeyType
   amount: number
+  price: number
 }
 
 interface CartContextType {
@@ -304,10 +305,21 @@ export function CartContextProvider({ children }: CartContextProviderProps) {
       setCart((oldCart) => {
         if (oldCart.find((oldCartCoffee) => oldCartCoffee.id === cartCoffee.id))
           return oldCart.map((oldCartCoffee) =>
-            oldCartCoffee.id === cartCoffee.id ? cartCoffee : oldCartCoffee,
+            oldCartCoffee.id === cartCoffee.id
+              ? {
+                  ...cartCoffee,
+                  price: cartCoffee.amount * coffees[cartCoffee.type].price,
+                }
+              : oldCartCoffee,
           )
 
-        return [...oldCart, cartCoffee]
+        return [
+          ...oldCart,
+          {
+            ...cartCoffee,
+            price: cartCoffee.amount * coffees[cartCoffee.type].price,
+          },
+        ]
       })
     }
   }

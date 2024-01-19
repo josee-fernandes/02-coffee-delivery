@@ -12,6 +12,8 @@ import {
 
 import { AmountCounter } from '../../../../components/AmountCounter'
 import { CartContext, CoffeeKeyType } from '../../../../contexts/CartContext'
+import { formatCurrency } from '../../../../utils/currency'
+// import { formatCurrency } from '../../../../utils/currency'
 
 export interface CoffeeType {
   id: string
@@ -35,12 +37,24 @@ export function CoffeeCard({ coffee }: CoffeeCardProps) {
   const amount = cartCoffee?.amount ?? 0
 
   function increaseAmount() {
-    updateCoffeeAmount({ id: coffee.id, type: coffee.type, amount: amount + 1 })
+    updateCoffeeAmount({
+      ...cartCoffee,
+      id: coffee.id,
+      type: coffee.type,
+      amount: amount + 1,
+    })
   }
 
   function reduceAmount() {
-    updateCoffeeAmount({ id: coffee.id, type: coffee.type, amount: amount - 1 })
+    updateCoffeeAmount({
+      ...cartCoffee,
+      id: coffee.id,
+      type: coffee.type,
+      amount: amount - 1,
+    })
   }
+
+  const price = formatCurrency(coffee.price, false)
 
   return (
     <CardContainer>
@@ -60,7 +74,7 @@ export function CoffeeCard({ coffee }: CoffeeCardProps) {
 
       <BuyInfo>
         <span>
-          R$ <strong>{coffee.price}</strong>
+          R$ <strong>{price}</strong>
         </span>
 
         <Actions>

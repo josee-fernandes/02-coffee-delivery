@@ -5,7 +5,7 @@ import {
   MapPinLine,
   Money,
 } from 'phosphor-react'
-import { useForm } from 'react-hook-form'
+import { FormProvider, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 import { Container } from '../../styles/Container'
@@ -14,6 +14,7 @@ import {
   AddressInputsContainer,
   CheckoutContainer,
   FinishOrderButton,
+  FormInputFieldsContainer,
   FormWrapper,
   PaymentContainer,
   PaymentMethodButton,
@@ -23,12 +24,20 @@ import {
   SelectedCoffeesList,
 } from './styles'
 import { SelectedCoffeeItem } from './components/SelectedCoffeeItem'
-import { NavLink } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useContext } from 'react'
 import { CartContext, coffees } from '../../contexts/CartContext'
 import { formatCurrency } from '../../utils/currency'
 
-const paymentMethodEnum = z.enum(['creditCard', 'debitCard', 'money'])
+export const paymentMethods = {
+  creditCard: 'Cartão de crédito',
+  debitCard: 'Cartão de débito',
+  money: 'Dinheiro',
+} as const
+
+const keys = Object.keys(paymentMethods) as [keyof typeof paymentMethods]
+
+const paymentMethodEnum = z.enum(keys)
 
 const finishOrderSchema = z.object({
   cep: z
@@ -46,27 +55,32 @@ const finishOrderSchema = z.object({
   paymentMethod: paymentMethodEnum,
 })
 
-type FinishOrderSchemaType = z.infer<typeof finishOrderSchema>
+export type FinishOrderSchemaType = z.infer<typeof finishOrderSchema>
 
 export function Checkout() {
   const { cart } = useContext(CartContext)
 
-  const { register, handleSubmit, watch, setValue } =
-    useForm<FinishOrderSchemaType>({
-      defaultValues: {
-        cep: '',
-        street: '',
-        number: 0,
-        complement: '',
-        neighborhood: '',
-        city: '',
-        state: '',
-        paymentMethod: 'creditCard',
-      },
-    })
+  const navigate = useNavigate()
+
+  const checkoutForm = useForm<FinishOrderSchemaType>({
+    defaultValues: {
+      cep: '',
+      street: '',
+      number: 0,
+      complement: '',
+      neighborhood: '',
+      city: '',
+      state: '',
+      paymentMethod: 'creditCard',
+    },
+  })
+
+  const { register, handleSubmit, watch, setValue } = checkoutForm
 
   function finishOrder(data: FinishOrderSchemaType) {
     console.log(data)
+
+    navigate('/success', { state: data })
   }
 
   function checkPaymentOption(event: React.MouseEvent<HTMLButtonElement>) {
@@ -95,174 +109,175 @@ export function Checkout() {
   return (
     <CheckoutContainer>
       <Container>
-        <FormWrapper>
-          <main>
-            <h2>Complete seu pedido</h2>
-            <form onSubmit={handleSubmit(finishOrder)}>
-              <AddressContainer>
-                <header>
-                  <MapPinLine size={22} />
-                  <div>
-                    <strong>Endereço de entrega</strong>
-                    <p>Informe o endereço onde deseja receber seu pedido</p>
-                  </div>
-                </header>
+        <FormProvider {...checkoutForm}>
+          <FormWrapper onSubmit={handleSubmit(finishOrder)}>
+            <main>
+              <h2>Complete seu pedido</h2>
+              <FormInputFieldsContainer>
+                <AddressContainer>
+                  <header>
+                    <MapPinLine size={22} />
+                    <div>
+                      <strong>Endereço de entrega</strong>
+                      <p>Informe o endereço onde deseja receber seu pedido</p>
+                    </div>
+                  </header>
 
-                <AddressInputsContainer>
-                  <input
-                    type="text"
-                    placeholder="CEP"
-                    minLength={1}
-                    maxLength={9}
-                    required
-                    {...register('cep')}
-                  />
-                  <input
-                    type="text"
-                    placeholder="Rua"
-                    minLength={1}
-                    required
-                    {...register('street')}
-                  />
-                  <div>
+                  <AddressInputsContainer>
                     <input
                       type="text"
-                      placeholder="Número"
+                      placeholder="CEP"
+                      minLength={1}
+                      maxLength={9}
+                      required
+                      {...register('cep')}
+                    />
+                    <input
+                      type="text"
+                      placeholder="Rua"
                       minLength={1}
                       required
-                      {...register('number')}
+                      {...register('street')}
                     />
-                    <span>
+                    <div>
                       <input
                         type="text"
-                        placeholder="Complemento"
+                        placeholder="Número"
                         minLength={1}
-                        {...register('complement')}
+                        required
+                        {...register('number')}
                       />
-                      {!isComplementTyped && <p>Opcional</p>}
-                    </span>
-                  </div>
-                  <div>
+                      <span>
+                        <input
+                          type="text"
+                          placeholder="Complemento"
+                          minLength={1}
+                          {...register('complement')}
+                        />
+                        {!isComplementTyped && <p>Opcional</p>}
+                      </span>
+                    </div>
+                    <div>
+                      <input
+                        type="text"
+                        placeholder="Bairro"
+                        minLength={1}
+                        required
+                        {...register('neighborhood')}
+                      />
+                      <input
+                        type="text"
+                        placeholder="Cidade"
+                        minLength={1}
+                        required
+                        {...register('city')}
+                      />
+                      <input
+                        type="text"
+                        placeholder="UF"
+                        minLength={1}
+                        required
+                        {...register('state')}
+                      />
+                    </div>
+                  </AddressInputsContainer>
+                </AddressContainer>
+                <PaymentContainer>
+                  <header>
+                    <CurrencyDollar size={22} />
+                    <div>
+                      <strong>Pagamento</strong>
+                      <p>
+                        O pagamento é feito na entrega. Escolha a forma que
+                        deseja pagar
+                      </p>
+                    </div>
+                  </header>
+                  <PaymentMethodsContainer>
                     <input
-                      type="text"
-                      placeholder="Bairro"
-                      minLength={1}
-                      required
-                      {...register('neighborhood')}
+                      type="radio"
+                      {...register('paymentMethod')}
+                      value={paymentMethodEnum.Enum.creditCard}
                     />
+                    <PaymentMethodButton
+                      type="button"
+                      onClick={checkPaymentOption}
+                      value={paymentMethodEnum.Enum.creditCard}
+                    >
+                      <CreditCard size={16} />
+                      <p>CARTÃO DE CRÉDITO</p>
+                    </PaymentMethodButton>
                     <input
-                      type="text"
-                      placeholder="Cidade"
-                      minLength={1}
-                      required
-                      {...register('city')}
+                      type="radio"
+                      {...register('paymentMethod')}
+                      value={paymentMethodEnum.Enum.debitCard}
                     />
+                    <PaymentMethodButton
+                      type="button"
+                      onClick={checkPaymentOption}
+                      value={paymentMethodEnum.Enum.debitCard}
+                    >
+                      <Bank size={16} />
+                      <p>CARTÃO DE DÉBITO</p>
+                    </PaymentMethodButton>
                     <input
-                      type="text"
-                      placeholder="UF"
-                      minLength={1}
-                      required
-                      {...register('state')}
+                      type="radio"
+                      {...register('paymentMethod')}
+                      value={paymentMethodEnum.Enum.money}
                     />
-                  </div>
-                </AddressInputsContainer>
-              </AddressContainer>
-              <PaymentContainer>
-                <header>
-                  <CurrencyDollar size={22} />
-                  <div>
-                    <strong>Pagamento</strong>
-                    <p>
-                      O pagamento é feito na entrega. Escolha a forma que deseja
-                      pagar
-                    </p>
-                  </div>
-                </header>
-                <PaymentMethodsContainer>
-                  <input
-                    type="radio"
-                    {...register('paymentMethod')}
-                    value={paymentMethodEnum.Enum.creditCard}
-                  />
-                  <PaymentMethodButton
-                    type="button"
-                    onClick={checkPaymentOption}
-                    value={paymentMethodEnum.Enum.creditCard}
-                  >
-                    <CreditCard size={16} />
-                    <p>CARTÃO DE CRÉDITO</p>
-                  </PaymentMethodButton>
-                  <input
-                    type="radio"
-                    {...register('paymentMethod')}
-                    value={paymentMethodEnum.Enum.debitCard}
-                  />
-                  <PaymentMethodButton
-                    type="button"
-                    onClick={checkPaymentOption}
-                    value={paymentMethodEnum.Enum.debitCard}
-                  >
-                    <Bank size={16} />
-                    <p>CARTÃO DE DÉBITO</p>
-                  </PaymentMethodButton>
-                  <input
-                    type="radio"
-                    {...register('paymentMethod')}
-                    value={paymentMethodEnum.Enum.money}
-                  />
-                  <PaymentMethodButton
-                    type="button"
-                    value={paymentMethodEnum.Enum.money}
-                    onClick={checkPaymentOption}
-                  >
-                    <Money size={16} />
-                    <p>DINHEIRO</p>
-                  </PaymentMethodButton>
-                </PaymentMethodsContainer>
-              </PaymentContainer>
-            </form>
-          </main>
-          <SelectedCoffeesContainer>
-            <h2>Cafés selecionados</h2>
-            <div>
-              <SelectedCoffeesList>
-                {cart.map((cartCoffee) => (
-                  <SelectedCoffeeItem
-                    key={cartCoffee.id}
-                    coffee={coffees[cartCoffee.type]}
-                  />
-                ))}
-              </SelectedCoffeesList>
-              <PricingInfoTableContainer>
-                <table>
-                  <tbody>
-                    <tr>
-                      <td>Total de itens</td>
-                      <td>{coffeeTotalFormatted}</td>
-                    </tr>
-                    <tr>
-                      <td>Entrega</td>
-                      <td>{deliveryValueFormatted}</td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <strong>Total</strong>
-                      </td>
-                      <td>
-                        <strong>{totalFormatted}</strong>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </PricingInfoTableContainer>
-              <NavLink to="/success">
-                <FinishOrderButton type="button">
+                    <PaymentMethodButton
+                      type="button"
+                      value={paymentMethodEnum.Enum.money}
+                      onClick={checkPaymentOption}
+                    >
+                      <Money size={16} />
+                      <p>DINHEIRO</p>
+                    </PaymentMethodButton>
+                  </PaymentMethodsContainer>
+                </PaymentContainer>
+              </FormInputFieldsContainer>
+            </main>
+            <SelectedCoffeesContainer>
+              <h2>Cafés selecionados</h2>
+              <div>
+                <SelectedCoffeesList>
+                  {cart.map((cartCoffee) => (
+                    <SelectedCoffeeItem
+                      key={cartCoffee.id}
+                      coffee={coffees[cartCoffee.type]}
+                    />
+                  ))}
+                </SelectedCoffeesList>
+                <PricingInfoTableContainer>
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>Total de itens</td>
+                        <td>{coffeeTotalFormatted}</td>
+                      </tr>
+                      <tr>
+                        <td>Entrega</td>
+                        <td>{deliveryValueFormatted}</td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <strong>Total</strong>
+                        </td>
+                        <td>
+                          <strong>{totalFormatted}</strong>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </PricingInfoTableContainer>
+
+                <FinishOrderButton type="submit">
                   CONFIRMAR PEDIDO
                 </FinishOrderButton>
-              </NavLink>
-            </div>
-          </SelectedCoffeesContainer>
-        </FormWrapper>
+              </div>
+            </SelectedCoffeesContainer>
+          </FormWrapper>
+        </FormProvider>
       </Container>
     </CheckoutContainer>
   )

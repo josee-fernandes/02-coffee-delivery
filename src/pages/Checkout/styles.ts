@@ -10,31 +10,31 @@ export const CheckoutContainer = styled.div`
     font-size: 700;
     color: ${(props) => props.theme['base-subtitle']};
   }
-
-  form {
-    input {
-      background: ${(props) => props.theme['base-input']};
-      color: ${(props) => props.theme['base-text']};
-      font-size: 0.875rem;
-      border-radius: 4px;
-      padding: 0.75rem;
-      border: 1px solid ${(props) => props.theme['base-button']};
-      box-shadow: none;
-
-      &::placeholder {
-        color: ${(props) => props.theme['base-label']};
-      }
-
-      &:focus {
-        border-color: ${(props) => props.theme['yellow-dark']};
-      }
-    }
-  }
 `
 
-export const FormWrapper = styled.div`
+export const FormWrapper = styled.form`
   display: flex;
   gap: 2rem;
+`
+
+export const FormInputFieldsContainer = styled.div`
+  input {
+    background: ${(props) => props.theme['base-input']};
+    color: ${(props) => props.theme['base-text']};
+    font-size: 0.875rem;
+    border-radius: 4px;
+    padding: 0.75rem;
+    border: 1px solid ${(props) => props.theme['base-button']};
+    box-shadow: none;
+
+    &::placeholder {
+      color: ${(props) => props.theme['base-label']};
+    }
+
+    &:focus {
+      border-color: ${(props) => props.theme['yellow-dark']};
+    }
+  }
 `
 
 export const FormSectionContainer = styled.div`
@@ -178,7 +178,7 @@ export const PaymentMethodButton = styled.button`
   }
 `
 
-export const SelectedCoffeesContainer = styled.div`
+export const SelectedCoffeesContainer = styled.aside`
   & > div {
     margin-top: 0.9375rem;
     background: ${(props) => props.theme['base-card']};

@@ -5,6 +5,7 @@ export const SuccessContainer = styled.div`
     display: flex;
     gap: 6.375rem;
     margin-top: 5rem;
+    justify-content: center;
   }
 
   main {

@@ -106,6 +106,8 @@ export function Checkout() {
   const deliveryValueFormatted = formatCurrency(deliveryValue)
   const totalFormatted = formatCurrency(total)
 
+  const disableInputs = cart.length === 0
+
   return (
     <CheckoutContainer>
       <Container>
@@ -130,6 +132,7 @@ export function Checkout() {
                       minLength={1}
                       maxLength={9}
                       required
+                      disabled={disableInputs}
                       {...register('cep')}
                     />
                     <input
@@ -137,6 +140,7 @@ export function Checkout() {
                       placeholder="Rua"
                       minLength={1}
                       required
+                      disabled={disableInputs}
                       {...register('street')}
                     />
                     <div>
@@ -145,6 +149,7 @@ export function Checkout() {
                         placeholder="Número"
                         minLength={1}
                         required
+                        disabled={disableInputs}
                         {...register('number')}
                       />
                       <span>
@@ -152,6 +157,7 @@ export function Checkout() {
                           type="text"
                           placeholder="Complemento"
                           minLength={1}
+                          disabled={disableInputs}
                           {...register('complement')}
                         />
                         {!isComplementTyped && <p>Opcional</p>}
@@ -163,6 +169,7 @@ export function Checkout() {
                         placeholder="Bairro"
                         minLength={1}
                         required
+                        disabled={disableInputs}
                         {...register('neighborhood')}
                       />
                       <input
@@ -170,6 +177,7 @@ export function Checkout() {
                         placeholder="Cidade"
                         minLength={1}
                         required
+                        disabled={disableInputs}
                         {...register('city')}
                       />
                       <input
@@ -177,6 +185,7 @@ export function Checkout() {
                         placeholder="UF"
                         minLength={1}
                         required
+                        disabled={disableInputs}
                         {...register('state')}
                       />
                     </div>
@@ -203,6 +212,7 @@ export function Checkout() {
                       type="button"
                       onClick={checkPaymentOption}
                       value={paymentMethodEnum.Enum.creditCard}
+                      disabled={disableInputs}
                     >
                       <CreditCard size={16} />
                       <p>CARTÃO DE CRÉDITO</p>
@@ -211,11 +221,13 @@ export function Checkout() {
                       type="radio"
                       {...register('paymentMethod')}
                       value={paymentMethodEnum.Enum.debitCard}
+                      disabled={disableInputs}
                     />
                     <PaymentMethodButton
                       type="button"
                       onClick={checkPaymentOption}
                       value={paymentMethodEnum.Enum.debitCard}
+                      disabled={disableInputs}
                     >
                       <Bank size={16} />
                       <p>CARTÃO DE DÉBITO</p>
@@ -229,6 +241,7 @@ export function Checkout() {
                       type="button"
                       value={paymentMethodEnum.Enum.money}
                       onClick={checkPaymentOption}
+                      disabled={disableInputs}
                     >
                       <Money size={16} />
                       <p>DINHEIRO</p>
@@ -237,45 +250,47 @@ export function Checkout() {
                 </PaymentContainer>
               </FormInputFieldsContainer>
             </main>
-            <SelectedCoffeesContainer>
-              <h2>Cafés selecionados</h2>
-              <div>
-                <SelectedCoffeesList>
-                  {cart.map((cartCoffee) => (
-                    <SelectedCoffeeItem
-                      key={cartCoffee.id}
-                      coffee={coffees[cartCoffee.type]}
-                    />
-                  ))}
-                </SelectedCoffeesList>
-                <PricingInfoTableContainer>
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>Total de itens</td>
-                        <td>{coffeeTotalFormatted}</td>
-                      </tr>
-                      <tr>
-                        <td>Entrega</td>
-                        <td>{deliveryValueFormatted}</td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <strong>Total</strong>
-                        </td>
-                        <td>
-                          <strong>{totalFormatted}</strong>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </PricingInfoTableContainer>
+            {cart.length > 0 && (
+              <SelectedCoffeesContainer>
+                <h2>Cafés selecionados</h2>
+                <div>
+                  <SelectedCoffeesList>
+                    {cart.map((cartCoffee) => (
+                      <SelectedCoffeeItem
+                        key={cartCoffee.id}
+                        coffee={coffees[cartCoffee.type]}
+                      />
+                    ))}
+                  </SelectedCoffeesList>
+                  <PricingInfoTableContainer>
+                    <table>
+                      <tbody>
+                        <tr>
+                          <td>Total de itens</td>
+                          <td>{coffeeTotalFormatted}</td>
+                        </tr>
+                        <tr>
+                          <td>Entrega</td>
+                          <td>{deliveryValueFormatted}</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <strong>Total</strong>
+                          </td>
+                          <td>
+                            <strong>{totalFormatted}</strong>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </PricingInfoTableContainer>
 
-                <FinishOrderButton type="submit">
-                  CONFIRMAR PEDIDO
-                </FinishOrderButton>
-              </div>
-            </SelectedCoffeesContainer>
+                  <FinishOrderButton type="submit">
+                    CONFIRMAR PEDIDO
+                  </FinishOrderButton>
+                </div>
+              </SelectedCoffeesContainer>
+            )}
           </FormWrapper>
         </FormProvider>
       </Container>

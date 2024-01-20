@@ -15,6 +15,7 @@ export const CheckoutContainer = styled.div`
 export const FormWrapper = styled.form`
   display: flex;
   gap: 2rem;
+  justify-content: center;
 `
 
 export const FormInputFieldsContainer = styled.div`
@@ -80,6 +81,17 @@ export const AddressInputsContainer = styled.div`
   input {
     width: 100%;
     max-width: 200px;
+    transition: opacity 150ms;
+
+    &:disabled {
+      cursor: not-allowed;
+      opacity: 0.7;
+
+      & + p {
+        opacity: 0.7;
+        cursor: not-allowed;
+      }
+    }
   }
 
   input[name='street'] {
@@ -95,7 +107,6 @@ export const AddressInputsContainer = styled.div`
       position: relative;
 
       p {
-        content: 'Opcional';
         position: absolute;
         right: 0.75rem;
         top: 0.75rem;
@@ -139,8 +150,10 @@ export const PaymentContainer = styled(FormSectionContainer)`
   }
 
   input[type='radio']:checked + button {
-    background: ${(props) => props.theme['purple-light']};
-    border-color: ${(props) => props.theme.purple};
+    &:not(:disabled) {
+      background: ${(props) => props.theme['purple-light']};
+      border-color: ${(props) => props.theme.purple};
+    }
   }
 `
 
@@ -159,11 +172,19 @@ export const PaymentMethodButton = styled.button`
   border-radius: 6px;
   border: 1px solid transparent;
   cursor: pointer;
-  transition: background-color 150ms;
+  transition:
+    background-color 150ms,
+    border-color 150ms,
+    opacity 150ms;
 
-  &:hover {
+  &:not(:disabled):hover {
     background: ${(props) => props.theme['base-hover']};
     color: ${(props) => props.theme['base-subtitle']};
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
   }
 
   svg {

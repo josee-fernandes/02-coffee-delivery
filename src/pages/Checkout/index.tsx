@@ -58,7 +58,7 @@ const finishOrderSchema = z.object({
 export type FinishOrderSchemaType = z.infer<typeof finishOrderSchema>
 
 export function Checkout() {
-  const { cart } = useContext(CartContext)
+  const { cart, wipeCart } = useContext(CartContext)
 
   const navigate = useNavigate()
 
@@ -75,12 +75,12 @@ export function Checkout() {
     },
   })
 
-  const { register, handleSubmit, watch, setValue } = checkoutForm
+  const { register, handleSubmit, watch, setValue, reset } = checkoutForm
 
   function finishOrder(data: FinishOrderSchemaType) {
-    console.log(data)
-
-    navigate('/success', { state: data })
+    navigate('/success', { state: data, replace: true })
+    reset()
+    wipeCart()
   }
 
   function checkPaymentOption(event: React.MouseEvent<HTMLButtonElement>) {
